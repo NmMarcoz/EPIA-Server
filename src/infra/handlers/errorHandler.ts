@@ -45,9 +45,10 @@ export const errorHandler = (error, code, set) => {
     }
     if (error instanceof HttpException) {
         console.error("HTTPEXCEPTION");
+        console.log("erro", error);
         set.status = error.statusCode;
         return {
-            message: error.message,
+            message: error.message || "erro desconhecido",
         };
     }
     if (error instanceof MongoError) {

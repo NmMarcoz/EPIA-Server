@@ -1,4 +1,4 @@
-import { type } from "arktype"
+import { type } from "arktype";
 export const CreateSectorRequest = type({
     code: "string",
     name: "string",
@@ -11,3 +11,41 @@ export const UpdateSectorRequest = type({
     rules: "string[]"
 }).partial();
 
+export const createWorkerRequest = type({
+    name: "string",
+    registrationNumber: "string == 4",
+    email: "string.email",
+    function: "string",
+    cardId: "string"
+})
+
+export const updateWorkerRequest = type({
+    name: "string",
+    email: "string.email",
+    function: "string",
+    cardId: "string"
+}).partial()
+
+
+export const createAdminRequest = type({
+    name: "string",
+    email: "string.email",
+    function: "string",
+    cardId: "string",
+    password: "string >= 8"
+})
+
+export const updateAdminRequest = type({
+    name: "string",
+    email: "string.email",
+    function: "string",
+    cardId: "string",
+}).partial()
+
+export const createLogRequest = type({
+    worker: "string",
+    sector: "string",
+    removedEpi: "string[]",
+    remotionHour: "string",
+    allEpiCorrects: "boolean"
+})

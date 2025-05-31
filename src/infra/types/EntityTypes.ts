@@ -6,3 +6,4 @@ export type User = typeof arktyper.CreateUserRequest.infer &  {
 export type Store = typeof arktyper.CreateStoreRequest.infer & {
     id: number;
 }
+

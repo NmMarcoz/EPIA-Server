@@ -20,7 +20,7 @@ export const createSector = async (data: Sector) => {
 
 export const getAllSectors = async () => {
     const sectors = await Sector.find();
-    if (!sectors) {
+    if (!sectors || sectors.length === 0) {
         throw new HttpException("Sem setores cadastrados", 404);
     }
     return sectors.map((sector) => {

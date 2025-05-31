@@ -15,3 +15,4 @@ export const CreateStoreRequest = type({
     cep: "string.numeric == 8",
     //store_id: "number.integer"
 })
+

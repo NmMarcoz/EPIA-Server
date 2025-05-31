@@ -3,18 +3,22 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun --env-file=.env  --watch src/index.ts",
+    "release": "bun --env-file=.env.production src/index.ts"
   },
   "dependencies": {
     "@elysiajs/swagger": "^1.2.0",
+    "@types/bcrypt": "^5.0.2",
     "arktype": "^2.1.17",
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "elysia": "latest",
     "mongoose": "^8.14.3",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "dotenv-cli": "^8.0.0"
   },
   "module": "src/index.js"
 }
