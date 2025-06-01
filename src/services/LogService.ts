@@ -47,6 +47,13 @@ export const getLogById = async (id: string) => {
    }
 };
 
+export const saveLot = async(body: Log[])=>{
+    const result = await Log.insertMany(body)
+    return{
+        message: "Logs salvos"
+    }
+}
+
 export const updateLog = async (id: string, data: Partial<Log>) => {
     const log = await Log.findByIdAndUpdate(id, data, { new: true });
     if (!log) throw new HttpException("Log não encontrado", 404);

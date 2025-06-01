@@ -11,6 +11,16 @@ export const LogController = new Elysia()
         set.status = 200;
         return result;
     })
+    .post("/lot", async({set, body})=>{
+        if(!Array.isArray(body)) throw new HttpException("body deve ser um array", 400);
+        body.forEach((log)=>{
+            validator(createLogRequest, log);
+            logService.CreateLog(log)
+        }) 
+        return{
+            message:"logs criados"
+        }
+    })
     .get("/", async ({ set }) => {
         const logs = await logService.getAllLogs();
         return logs;
