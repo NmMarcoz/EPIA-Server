@@ -22,6 +22,13 @@ export const WorkerController = new Elysia()
         set.status = 200;
         return worker;
     })
+    .get("/cardId/:id", async({set,body,params})=>{
+        console.log("body", params);
+        if(!params.id) throw new HttpException("id é obrigatório", 400);
+        const worker = await workerService.getWorkerByCardId(params.id);
+        set.status =200
+        return worker;
+    })
     .put("/:id", async({set,body, params})=>{
         if(!params.id) throw new HttpException("id é obrigatório", 400);
         

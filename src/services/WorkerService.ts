@@ -27,6 +27,12 @@ export const getWorkerById = async (id: string) => {
     return worker.getBaseAttributes();
 };
 
+export const getWorkerByCardId = async(cardId:string)=>{
+    const worker = await Worker.findOne({cardId});
+    if(!worker) throw new HttpException("Operário não encontrado", 400);
+    return worker.getBaseAttributes();
+}
+
 export const updateWorker = async (id: string, data: Partial<Worker>) => {
     const worker = await Worker.findByIdAndUpdate(id, data, { new: true });
     if (!worker) throw new HttpException("Operário não encontrado", 404);
