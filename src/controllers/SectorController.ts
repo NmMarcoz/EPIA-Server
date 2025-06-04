@@ -26,12 +26,14 @@ export const SectorController = new Elysia()
         return response;
     })
     .put("/:code", async ({params, body, set})=>{
+        console.log("update body", body);
         if(!params.code) throw new HttpException("code é obrigatório", 400);
         if(!body || Object.keys(body).length === 0) throw new ValidationException({
             summary: "Pelo menos um campo deve ser enviado",
             details: {schema: UpdateSectorRequest.description}
         })
         const sector = validator(UpdateSectorRequest, body) as Sector;
-        const response = await sectorService.update(params.code, sector);
+        const {code, ...newBody} = sector;
+        const response = await sectorService.update(params.code, newBody);
         return response;
     })

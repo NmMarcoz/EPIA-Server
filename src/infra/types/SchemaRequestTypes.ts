@@ -6,9 +6,9 @@ export const CreateSectorRequest = type({
 })
 
 export const UpdateSectorRequest = type({
-    code: "string",
-    name: "string",
-    rules: "string[]"
+    code: "string | null",
+    name: "string | null",
+    rules: "string[] | null"
 }).partial();
 
 export const createWorkerRequest = type({

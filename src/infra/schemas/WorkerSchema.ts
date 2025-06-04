@@ -5,7 +5,8 @@ export const WorkerSchema = new Schema({
     registrationNumber:{type:String, required:true, length:4, unique: true},
     email: {type: String, required:true},
     function: {type:String, required:true},
-    cardId: {type:String, required:true}
+    cardId: {type:String, required:true},
+    type: {type:String, required:true}
 },{
     timestamps:true,
     methods:{
@@ -16,7 +17,8 @@ export const WorkerSchema = new Schema({
                 registrationNumber: this.registrationNumber,
                 email: this.email,
                 function: this.function,
-                cardId: this.cardId
+                cardId: this.cardId,
+                type: this.type
             }
         }
     }
