@@ -4,7 +4,7 @@ export const LogSchema = new Schema(
     {
         worker: { type: Schema.ObjectId, ref: "Worker", required: true },
         sector: { type: Schema.ObjectId, ref: "Sector", required: true },
-        removedEpi: { type: Array<String>, required: true },
+        removedEpi: { type: Array<String>, null: true},
         remotionHour: { type: String, required: true },
         allEpiCorrects: { type: Boolean, required: true },
     },

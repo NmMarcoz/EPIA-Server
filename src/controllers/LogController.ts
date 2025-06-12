@@ -4,19 +4,28 @@ import { createLogRequest } from "../infra/types/SchemaRequestTypes";
 import * as logService from "../services/LogService";
 import { Log } from "../infra/schemas/LogSchema";
 import { HttpException } from "../infra/customErrors/HttpException";
+import axios from "axios";
+
 export const LogController = new Elysia()
     .post("/", async ({ set, body }) => {
-        const log = validator(createLogRequest, body) as Log;
-        const result = await logService.CreateLog(log);
-        set.status = 200;
-        return result;
+        // const log = validator(createLogRequest, body) as Log;
+        // const result = await logService.CreateLog(log);
+        // set.status = 200;
+        const response  = await axios.get("https://httpbin.org/ip");
+        return response.data;
     })
     .post("/lot", async({set, body})=>{
         if(!Array.isArray(body)) throw new HttpException("body deve ser um array", 400);
-        body.forEach((log)=>{
-            validator(createLogRequest, log);
-            logService.CreateLog(log)
-        }) 
+        console.log("body", body);
+        for(const log of body){
+            console.log("body", log);
+            await validator(createLogRequest, log);
+        }
+        const result = await logService.saveLot(body);
+        // body.forEach(async(log)=>{
+        //     await validator(createLogRequest, log);
+        //     await logService.CreateLog(log)
+        // }) 
         return{
             message:"logs criados"
         }

@@ -45,7 +45,8 @@ export const updateAdminRequest = type({
 export const createLogRequest = type({
     worker: "string",
     sector: "string",
-    removedEpi: "string[]",
+    detectedEpi: "string[] | null",
+    removedEpi: "string[] | null",
     remotionHour: "string",
     allEpiCorrects: "boolean"
 })

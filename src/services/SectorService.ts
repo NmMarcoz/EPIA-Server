@@ -41,6 +41,14 @@ export const getByCode = async(code:string)=>{
     
     return sector.getUserAvailableFields();
 }
+export const getById = async(id:string)=>{
+    const sector = await Sector.findOne({_id:id});
+
+    if(!sector) throw new HttpException("Setor não encontrado", 404);
+    //@ts-ignore
+    
+    return sector.getUserAvailableFields();
+}
 
 export const update = async(code:string, data:Sector)=>{
     const sector  = await Sector.findOneAndUpdate({code}, data, {new:true})
