@@ -7,7 +7,9 @@ import { WorkerRoute } from "./routes/WorkerRoute";
 import { AdminRoute } from "./routes/AdminRoute";
 import { LogRoute } from "./routes/LogRoute";
 import {cors} from "@elysiajs/cors";
-await mongoose.connect(process.env.DATABASE_URL!);
+// await mongoose.connect(process.env.DATABASE_URL!);
+await mongoose.connect("mongodb://localhost:27017/epia");
+
 
 const app = new Elysia()
     .get("/", () => "Hello Elysia")
