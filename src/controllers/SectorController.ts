@@ -25,6 +25,11 @@ export const SectorController = new Elysia()
         const response = await sectorService.getByCode(params.code);
         return response;
     })
+    .get("/id/:id", async ({params, set})=>{
+        if(!params.id) throw new HttpException("code é obrigatório", 400);
+        const response = await sectorService.getById(params.id);
+        return response;
+    })
     .put("/:code", async ({params, body, set})=>{
         console.log("update body", body);
         if(!params.code) throw new HttpException("code é obrigatório", 400);

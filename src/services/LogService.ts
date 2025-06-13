@@ -3,7 +3,7 @@ import { HttpException } from "../infra/customErrors/HttpException";
 import bcrypt from "bcrypt";
 import * as workerService from "./WorkerService";
 import { BoundModule } from "arktype";
-import { convertUnixTimestampToTime } from "../infra/utils/aux";
+import { convertUnixTimestampToTime } from "../infra/utils/auxiliares";
 import * as sectorService from "../services/SectorService";
 export const CreateLog = async (body: Log) => {
     await workerService.getWorkerById(String(body.worker));
