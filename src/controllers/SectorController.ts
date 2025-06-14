@@ -39,6 +39,7 @@ export const SectorController = new Elysia()
         })
         const sector = validator(UpdateSectorRequest, body) as Sector;
         const {code, ...newBody} = sector;
+        //@ts-ignore
         const response = await sectorService.update(params.code, newBody);
         return response;
     })
