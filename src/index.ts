@@ -7,6 +7,7 @@ import { WorkerRoute } from "./routes/WorkerRoute";
 import { AdminRoute } from "./routes/AdminRoute";
 import { LogRoute } from "./routes/LogRoute";
 import {cors} from "@elysiajs/cors";
+import { SessionRoute } from "./routes/SessionRoute";
 await mongoose.connect(process.env.DATABASE_URL!);
 
 const app = new Elysia()
@@ -15,6 +16,7 @@ const app = new Elysia()
     .use(WorkerRoute)
     .use(AdminRoute)
     .use(LogRoute)
+    .use(SessionRoute)
     .use(cors({
         origin: "*",
         methods: "*"

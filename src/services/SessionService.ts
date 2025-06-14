@@ -4,6 +4,7 @@ import * as workerService from "../services/WorkerService";
 
 export const getSession = async () => {
     const session = await Session.find();
+    if(!session || session.length === 0) throw new HttpException("Sem sessões ativas", 404)
     const worker = await workerService.getWorkerByCardId(session[0].cardId);
     if (!worker) {
         throw new HttpException("Operário não encontrado", 404);

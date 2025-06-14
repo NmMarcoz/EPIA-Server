@@ -56,12 +56,10 @@ export const saveLot = async (body: Log[]) => {
     const sector = await sectorService.getById(String(body[0].sector));
     body.forEach((log) => {
         log.allEpiCorrects =
-        //@ts-ignore
-            (log.removedEpi && log.removedEpi.length > 0) ||
             //@ts-ignore
-            !log.detectedEpi.every((epi) => sector.rules.includes(epi))
-                ? false
-                : true;
+            //TODO ->testar
+            sector.rules.includes(log.removedEpi)
+             
     });
     await Log.insertMany(body);
     return { message: "Logs salvos" };
