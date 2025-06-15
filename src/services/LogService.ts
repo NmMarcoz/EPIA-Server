@@ -5,8 +5,9 @@ import * as workerService from "./WorkerService";
 import { BoundModule } from "arktype";
 import * as notificationService from "./NotificationService";
 import {
-    arraysHaveSameItems,
+    
     convertUnixTimestampToTime,
+    epiCorrects,
     getNotificationMessage,
     saveNotification,
 } from "../infra/utils/auxiliares";
@@ -16,18 +17,18 @@ import { get } from "mongoose";
 export const CreateLog = async (body: Log) => {
     await workerService.getWorkerById(String(body.worker));
     const log = new Log(body);
-
+    const sector = await sectorService.getById(String(log.sector));
     log.remotionHour =
         log.remotionHour.length > 5
             ? convertUnixTimestampToTime(Number(log.remotionHour))
             : log.remotionHour;
-    log.allEpiCorrects =
+    log.allEpiCorrects = 
         //@ts-ignore
         //TODO ->testar
-        arraysHaveSameItems(log.removedEpi, sector.rules);
+        epiCorrects(log.removedEpi, sector.rules);
 
     const result = await log.save();
-    if (!log.allEpiCorrects) {
+    if (!log.allEpiCorrects && log.notify) {
         await saveNotification(result); 
     }
 
@@ -55,6 +56,7 @@ export const getAllLogs = async () => {
             allEpiCorrects: log.allEpiCorrects,
             //@ts-ignore
             createdAt: log!.createdAt,
+            notify: log.notify,
         };
     });
 };
@@ -87,7 +89,10 @@ export const saveLot = async (body: Log[]) => {
     }
     const result = await Log.insertMany(body);
     for(const log of result) {
-        await saveNotification(log);
+        if(!log.allEpiCorrects && log.notify) {
+             await saveNotification(log);
+        }
+       
     }
     return { message: "Logs salvos" };
 };
@@ -103,3 +108,9 @@ export const deleteLog = async (id: string) => {
     if (!log) throw new HttpException("Log não encontrado", 404);
     return { message: "Log removido com sucesso" };
 };
+
+export const deleteAll = async()=>{
+    const result = await Log.deleteMany({});
+    if (result.deletedCount === 0) throw new HttpException("Nenhum log encontrado", 404);
+    return { message: "Todos os logs foram removidos com sucesso" , count: result.deletedCount};
+}

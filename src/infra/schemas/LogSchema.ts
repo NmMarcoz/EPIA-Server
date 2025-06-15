@@ -7,6 +7,7 @@ export const LogSchema = new Schema(
         removedEpi: { type: Array<String>, null: true},
         remotionHour: { type: String, required: true },
         allEpiCorrects: { type: Boolean, required: true },
+        notify:{type: Boolean, default: false, null:false},
     },
     {
         timestamps: true,
@@ -18,6 +19,7 @@ export const LogSchema = new Schema(
                     removedEpi: this.removedEpi,
                     remotionHour: this.remotionHour,
                     allEpiCorrects: this.allEpiCorrects,
+                    notify: this.notify
                 };
             },
         },

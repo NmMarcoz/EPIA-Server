@@ -10,15 +10,19 @@ export const convertUnixTimestampToTime = (timestamp: number): string => {
     });
 };
 
-export function arraysHaveSameItems(a: string[], b: string[]) {
-    if(a == null) return true;
-    const condition =
-        a.every((item) => b.includes(item)) &&
-        b.every((item) => a.includes(item));
-    if (condition) {
-        console.log("array sao iguais (epi corretos)");
-    } else console.log("array sao diferentes (epi invalidos)");
-    return condition;
+export function epiCorrects(a: string[], b: string[]) {
+
+    for(const item of a){
+        if(b.includes(item)){
+            console.log("item", item);
+            console.log("rules", b);
+            console.log("epis removidos detectados");
+            return false;
+        }
+    }
+    console.log("epis corretos")
+    return true;
+   
 }
 
 export function getNotificationMessage(log: Log) {

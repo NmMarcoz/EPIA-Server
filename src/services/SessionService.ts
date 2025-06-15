@@ -14,6 +14,12 @@ export const getSession = async () => {
 }
 
 export const newSession = async (cardId: string) => {
+    const worker = await workerService.getWorkerByCardId(cardId).catch(async (err) =>{
+        await Session.deleteMany({});
+        throw new HttpException("Operário não encontrado", 404);
+    
+    });
+   
     const session = new Session({
         cardId: cardId,
     });

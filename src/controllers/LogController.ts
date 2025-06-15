@@ -8,11 +8,11 @@ import axios from "axios";
 
 export const LogController = new Elysia()
     .post("/", async ({ set, body }) => {
-        // const log = validator(createLogRequest, body) as Log;
-        // const result = await logService.CreateLog(log);
-        // set.status = 200;
-        const response  = await axios.get("https://httpbin.org/ip");
-        return response.data;
+        const log = validator(createLogRequest, body) as Log;
+        const result = await logService.CreateLog(log);
+        set.status = 200;
+        // const response  = await axios.get("https://httpbin.org/ip");
+        return result;
     })
     .post("/lot", async({set, body})=>{
         if(!Array.isArray(body)) throw new HttpException("body deve ser um array", 400);
@@ -38,4 +38,9 @@ export const LogController = new Elysia()
         if (!params.id) throw new HttpException("id é obrigatório", 400);
         const log = await logService.getLogById(params.id);
         return log;
-    });
+    })
+    .delete("/", async({set})=>{
+        const result = await logService.deleteAll();
+        set.status = 204;
+        return result;
+    })
