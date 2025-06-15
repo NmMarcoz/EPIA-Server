@@ -3,12 +3,34 @@ import { HttpException } from "../infra/customErrors/HttpException";
 import bcrypt from "bcrypt";
 import * as workerService from "./WorkerService";
 import { BoundModule } from "arktype";
-import { convertUnixTimestampToTime } from "../infra/utils/auxiliares";
+import * as notificationService from "./NotificationService";
+import {
+    arraysHaveSameItems,
+    convertUnixTimestampToTime,
+    getNotificationMessage,
+    saveNotification,
+} from "../infra/utils/auxiliares";
 import * as sectorService from "../services/SectorService";
+import { Notification } from "../infra/schemas/NotificationSchema";
+import { get } from "mongoose";
 export const CreateLog = async (body: Log) => {
     await workerService.getWorkerById(String(body.worker));
     const log = new Log(body);
-    await log.save();
+
+    log.remotionHour =
+        log.remotionHour.length > 5
+            ? convertUnixTimestampToTime(Number(log.remotionHour))
+            : log.remotionHour;
+    log.allEpiCorrects =
+        //@ts-ignore
+        //TODO ->testar
+        arraysHaveSameItems(log.removedEpi, sector.rules);
+
+    const result = await log.save();
+    if (!log.allEpiCorrects) {
+        await saveNotification(result); 
+    }
+
     return {
         message: "Log salvo",
     };
@@ -54,14 +76,19 @@ export const getLogById = async (id: string) => {
 
 export const saveLot = async (body: Log[]) => {
     const sector = await sectorService.getById(String(body[0].sector));
-    body.forEach((log) => {
-        log.allEpiCorrects =
-            //@ts-ignore
-            //TODO ->testar
-            sector.rules.includes(log.removedEpi)
-             
-    });
-    await Log.insertMany(body);
+    for (const log of body) {
+        log.remotionHour =
+            log.remotionHour.length > 5
+                ? convertUnixTimestampToTime(Number(log.remotionHour))
+                : log.remotionHour;
+        //@ts-ignore
+        log.allEpiCorrects = arraysHaveSameItems(log.removedEpi, sector.rules);
+        
+    }
+    const result = await Log.insertMany(body);
+    for(const log of result) {
+        await saveNotification(log);
+    }
     return { message: "Logs salvos" };
 };
 

@@ -16,3 +16,8 @@ export const SessionController = new Elysia()
     set.status = 201;
     return response;
 })
+.delete("/", async ({ set, body }) => {
+    const response = await sessionService.deleteSessions();
+    set.status = 200;
+    return response;
+});

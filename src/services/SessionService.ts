@@ -9,7 +9,7 @@ export const getSession = async () => {
     if (!worker) {
         throw new HttpException("Operário não encontrado", 404);
     }
-    const deleted = await Session.deleteMany({});
+    //const deleted = await Session.deleteMany({});
     return worker;
 }
 
@@ -17,9 +17,21 @@ export const newSession = async (cardId: string) => {
     const session = new Session({
         cardId: cardId,
     });
+    await Session.deleteMany()
     const result = await Session.insertOne(session);
     return {
         message: "Sessão iniciada",
         session: result,
     }
+}
+
+export const deleteSessions = async () => {
+    const result = await Session.deleteMany({});
+    if (result.deletedCount === 0) {
+        throw new HttpException("Nenhuma sessão ativa para deletar", 404);
+    }
+    return {
+        message: "Todas as sessões foram deletadas",
+        deletedCount: result.deletedCount,
+    };
 }
