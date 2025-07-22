@@ -34,6 +34,7 @@ export const CreateLog = async (body: Log) => {
 
     return {
         message: "Log salvo",
+        log: log
     };
 };
 
@@ -84,7 +85,7 @@ export const saveLot = async (body: Log[]) => {
                 ? convertUnixTimestampToTime(Number(log.remotionHour))
                 : log.remotionHour;
         //@ts-ignore
-        log.allEpiCorrects = arraysHaveSameItems(log.removedEpi, sector.rules);
+        log.allEpiCorrects = epiCorrects(log.removedEpi, sector.rules);
         
     }
     const result = await Log.insertMany(body);

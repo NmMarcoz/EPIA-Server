@@ -10,19 +10,10 @@ export const convertUnixTimestampToTime = (timestamp: number): string => {
     });
 };
 
-export function epiCorrects(a: string[], b: string[]) {
-
-    for(const item of a){
-        if(b.includes(item)){
-            console.log("item", item);
-            console.log("rules", b);
-            console.log("epis removidos detectados");
-            return false;
-        }
-    }
-    console.log("epis corretos")
-    return true;
-   
+export function epiCorrects(removedEpis: string[], sectorRules: string[]) {
+    if (!removedEpis || removedEpis.length === 0) return true;
+    const rules = Array.isArray(sectorRules) ? sectorRules.map(r => String(r).trim()) : [];
+    return !removedEpis.some(item => rules.includes(item.trim()));
 }
 
 export function getNotificationMessage(log: Log) {
@@ -34,9 +25,10 @@ export function getNotificationMessage(log: Log) {
             summary: "sdasd",
         };
     }
-    const hour = log.remotionHour.length <= 5 
-        ? log.remotionHour
-        : convertUnixTimestampToTime(Number(log.remotionHour)) ;
+    const hour =
+        log.remotionHour.length <= 5
+            ? log.remotionHour
+            : convertUnixTimestampToTime(Number(log.remotionHour));
     console.log("hour", hour);
     summary = `O trabalhador de id:${
         log.worker
